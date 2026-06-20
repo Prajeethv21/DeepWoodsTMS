@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,550;0,700;1,400&family=Manrope:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --scrollbar-thumb: #E8EDE5;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #ffffff !important; /* Root background set to white for seamless tab connection */
+  color: #0f172a !important;
+  font-family: 'Outfit', 'Plus Jakarta Sans', 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================================
+   Active Nav Tab Styling - Collapsed (Circular Pill inside Sidebar)
+   ======================================================== */
+body:not(.sidebar-expanded) aside nav a.active-nav-tab {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  font-weight: 850 !important;
+  height: 40px !important;
+  width: 40px !important; /* Stays fully inside the sidebar */
+  border-radius: 9999px !important; /* Perfect circle */
+  position: relative !important;
+  z-index: 30 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  margin-right: 0 !important;
+}
+
+/* Centering the icon in the circular active tab */
+body:not(.sidebar-expanded) aside nav a.active-nav-tab svg {
+  margin: 0 auto !important;
+}
+
+/* ========================================================
+   Active Nav Tab Styling - Expanded (Standard Pill inside Sidebar)
+   ======================================================== */
+body.sidebar-expanded aside nav a.active-nav-tab {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  font-weight: 850 !important;
+  height: 40px !important;
+  border-radius: 0.75rem !important; /* rounded-xl on all sides */
+  position: relative !important;
+  z-index: 30 !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+  padding: 0.625rem 0.875rem !important; /* py-2.5 px-3.5 */
+  margin-right: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: start !important;
+  gap: 14px !important;
+}
+
+/* Remove notch/triangle pseudo-elements completely */
+aside nav a::before,
+aside nav a::after,
+aside nav a.active-nav-tab::before,
+aside nav a.active-nav-tab::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Smooth Hardware-Accelerated Link Hover/Active transitions */
+aside nav a {
+  transition: all 180ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transform: translateZ(0);
+  will-change: transform, opacity, background-color, color;
+}
+
+/* Global Light Page Background Overrides for Cutout Tab Connection */
+.min-h-screen.bg-slate-50, 
+.bg-slate-50, 
+.bg-slate-50\/40, 
+.bg-slate-50\/60,
+.bg-slate-100 {
+  background-color: #ffffff !important;
+}
+
+/* Desktop Sidebar Shift & Scale Transitions */
+@media (min-width: 768px) {
+  /* Sidebar, main content, and header animated in perfect synchronization */
+  aside,
+  main, 
+  .sticky.top-4 {
+    transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1), 
+                width 350ms cubic-bezier(0.4, 0, 0.2, 1), 
+                margin-left 350ms cubic-bezier(0.4, 0, 0.2, 1),
+                border-radius 350ms cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 350ms cubic-bezier(0.4, 0, 0.2, 1),
+                border 350ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* Main content container is styled as a premium card by default, maintaining 16px gap from minimized sidebar */
+  main {
+    margin-left: 88px !important; /* 72px (sidebar edge) + 16px gap */
+    width: calc(100% - 104px) !important; /* accounts for 88px left margin + 16px right margin */
+    border-radius: 24px !important;
+    background-color: #ffffff !important;
+    border: 1px solid rgba(17, 17, 17, 0.04) !important;
+    box-shadow: 0 10px 30px rgba(146, 193, 62, 0.015), 0 1px 3px rgba(0, 0, 0, 0.005) !important;
+  }
+
+  /* Main content container pushes right and scales down when sidebar expands */
+  body.sidebar-expanded main {
+    margin-left: 252px !important; /* Shift right (aside is 220px + 16px gap + 16px extra) */
+    width: calc(100% - 268px) !important; /* Reduce width */
+    border-radius: 28px !important; /* Premium rounded corner styling */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.01) !important;
+    border: 1px solid rgba(17, 17, 17, 0.05) !important;
+  }
+
+  /* Header shifts and scales to match main content container in both states */
+  .sticky.top-4 {
+    margin-left: 88px !important; /* 72px (sidebar edge) + 16px gap */
+    width: calc(100% - 104px) !important; /* 88px left margin + 16px right margin */
+    margin-bottom: 20px !important; /* Increased margin between navbar and page content */
+  }
+
+  body.sidebar-expanded .sticky.top-4 {
+    margin-left: 252px !important; /* 236px (sidebar edge) + 16px gap */
+    width: calc(100% - 268px) !important; /* 252px left margin + 16px right margin */
+  }
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F8FAFC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E8EDE5;
+  border-radius: 9999px;
+  border: 1px solid rgba(146, 193, 62, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #92c13e;
+}
+
+/* Custom CSS utilities */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Premium Card Classes - Soft green theme shadows */
+.premium-card {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 30px rgba(146, 193, 62, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card:hover {
+  box-shadow: 0 16px 40px rgba(146, 193, 62, 0.07), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(146, 193, 62, 0.25) !important;
+  transform: translateY(-1px);
+}
