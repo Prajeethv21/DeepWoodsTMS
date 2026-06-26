@@ -35,23 +35,28 @@ DTM-V1 features a built-in **in-memory database sandbox simulator**. If the Goog
 
 ### 1. Google Sheets & Apps Script Setup (Backend)
 
-The Apps Script files are located in the [apps_script/](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/) folder. Follow these steps to configure your Google Sheets database:
+The Apps Script files are located in the [backend/](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/) folder. Follow these steps to configure your Google Sheets database and Gmail integrations:
 
 1.  Create a new, empty **Google Sheet** inside your Google Drive.
 2.  Click on **Extensions** -> **Apps Script** in the top menu bar.
-3.  In the Apps Script editor, create files matching the scripts inside `apps_script/`:
-    *   [Code.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/Code.gs)
-    *   [Auth.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/Auth.gs)
-    *   [SheetsService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/SheetsService.gs)
-    *   [DashboardService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/DashboardService.gs)
-    *   [TriggerService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/TriggerService.gs)
-    *   [Utils.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/apps_script/Utils.gs)
+3.  In the Apps Script editor, create files matching the scripts inside `backend/`:
+    *   [Code.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/Code.gs)
+    *   [Auth.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/Auth.gs)
+    *   [SheetsService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/SheetsService.gs)
+    *   [DashboardService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/DashboardService.gs)
+    *   [TriggerService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/TriggerService.gs)
+    *   [Utils.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/Utils.gs)
+    *   [EmailService.gs](file:///c:/Users/praje/Documents/DeepwoodsTaskManager/backend/EmailService.gs)
 4.  In the editor, click on `TriggerService.gs` and execute the `setupNightlyTrigger` function once to automatically schedule the nightly task carry-forward script (which runs at 11:59 PM).
-5.  Click **Deploy** -> **New Deployment**.
+5.  **Authorize Gmail Permissions (Critical for Mail Center):**
+    *   In the function dropdown at the top of the editor, select the **`triggerGmailAuthorization`** function.
+    *   Click **Run**.
+    *   When the authorization prompt appears, click **Review Permissions**, select your Google account, click **Advanced > Go to Untitled project (unsafe)**, and click **Allow**.
+6.  Click **Deploy** -> **New Deployment**.
     *   Choose type: **Web App**
     *   Execute as: **Me (your-email)**
     *   Who has access: **Anyone** (this is critical to allow React client requests).
-6.  Authorize the permissions when prompted, and copy the generated **Web App URL** (e.g. `https://script.google.com/macros/s/.../exec`).
+7.  Copy the generated **Web App URL** (e.g. `https://script.google.com/macros/s/.../exec`).
 
 > [!NOTE]
 > On the first deployment, Google Sheets structures (`tasks`, `projects`, `team_config`) and sample seed rows will automatically bootstrap inside the active spreadsheet.
