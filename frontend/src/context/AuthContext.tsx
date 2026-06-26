@@ -6,6 +6,7 @@ export interface AuthUser {
   name: string;
   picture?: string;
   isAdmin: boolean;
+  isGoogleAuth?: boolean;
 }
 
 export interface AuthContextType {
@@ -13,7 +14,7 @@ export interface AuthContextType {
   loading: boolean;
   authError: string | null;
   error: string | null; // alias for authError
-  login: (emailOrToken: string) => Promise<AuthUser | null>;
+  login: (emailOrToken: string, requiredRole?: 'admin' | 'member') => Promise<AuthUser | null>;
   logout: () => void;
   setAuthError: React.Dispatch<React.SetStateAction<string | null>>;
   searchQuery: string;
@@ -47,20 +48,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Attempt login check - accepts either a plain email string or a Google JWT credential token
-  const login = async (emailOrToken: string): Promise<AuthUser | null> => {
+  const login = async (emailOrToken: string, requiredRole?: 'admin' | 'member'): Promise<AuthUser | null> => {
     setLoading(true);
     setAuthError(null);
     try {
       let email = emailOrToken;
-      let name = null;
-      let picture = null;
-
+      let name: string | null = null;
+      let picture: string | null = null;
+      let isGoogle = false;
+      
       if (emailOrToken && !emailOrToken.includes('@') && emailOrToken.includes('.') && emailOrToken.split('.').length === 3) {
         const payload = decodeGoogleToken(emailOrToken);
         if (payload && payload.email) {
           email = payload.email;
           name = payload.name;
           picture = payload.picture;
+          isGoogle = true;
         }
       }
 
@@ -71,15 +74,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await authService.validateUser(email);
       
       if (response && response.authenticated) {
+        // Enforce requiredRole checks
+        if (requiredRole === 'admin' && !response.isAdmin) {
+          setUser(null);
+          setAuthError("Access Denied: This account does not have administrator privileges.");
+          return null;
+        }
+        
+        if (requiredRole === 'member' && response.isAdmin) {
+          setUser(null);
+          setAuthError("Access Denied: This account is registered as an administrator. Please log in using the Administrator tab.");
+          return null;
+        }
+
         const sessionUser: AuthUser = {
           email: response.email,
           name: response.name || name || email.split('@')[0],
           picture: picture || undefined,
-          isAdmin: response.isAdmin
+          isAdmin: response.isAdmin,
+          isGoogleAuth: isGoogle
         };
         setUser(sessionUser);
         localStorage.setItem('deepwoods_email', sessionUser.email);
         localStorage.setItem('deepwoods_name', sessionUser.name);
+        localStorage.setItem('deepwoods_google_auth', String(isGoogle));
         return sessionUser;
       } else {
         setUser(null);
@@ -100,6 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     localStorage.removeItem('deepwoods_email');
     localStorage.removeItem('deepwoods_name');
+    localStorage.removeItem('deepwoods_google_auth');
     setUser(null);
     setAuthError(null);
   };
@@ -109,6 +128,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const checkSavedSession = async () => {
       const savedEmail = localStorage.getItem('deepwoods_email');
       const savedName = localStorage.getItem('deepwoods_name');
+      const savedGoogleAuth = localStorage.getItem('deepwoods_google_auth') === 'true';
       if (savedEmail) {
         try {
           const response = await authService.validateUser(savedEmail);
@@ -116,7 +136,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             setUser({
               email: response.email,
               name: response.name || savedName || 'User',
-              isAdmin: response.isAdmin
+              isAdmin: response.isAdmin,
+              isGoogleAuth: savedGoogleAuth
             });
           } else {
             logout();

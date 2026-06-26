@@ -3,7 +3,6 @@ import useAuth from '../hooks/useAuth';
 import useTasks from '../hooks/useTasks';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
-import PriorityBadge from '../components/PriorityBadge';
 import StatusToggle from '../components/StatusToggle';
 import { History } from 'lucide-react';
 
@@ -208,14 +207,11 @@ export const TaskHistory: React.FC = () => {
               <table className="w-full border-collapse text-left text-[11px] md:text-xs">
                 <thead>
                   <tr className="bg-slate-50/60 border-b border-slate-100 text-slate-400 font-black uppercase tracking-wider font-sans text-[9.5px]">
-                    <th className="p-3.5 pl-6">DATE</th>
-                    <th className="p-3.5">ID</th>
+                    <th className="p-3.5 pl-6">DATE ASSIGNED</th>
                     <th className="p-3.5">PROJECT</th>
-                    <th className="p-3.5">TASK DESCRIPTION</th>
-                    <th className="p-3.5">PRIORITY</th>
+                    <th className="p-3.5 w-full">TASK DESCRIPTION</th>
                     <th className="p-3.5">STATUS</th>
-                    <th className="p-3.5">COMPLETED</th>
-                    <th className="p-3.5 pr-6">REMARKS</th>
+                    <th className="p-3.5 pr-6">COMPLETED ON</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -227,36 +223,29 @@ export const TaskHistory: React.FC = () => {
                       <td className="p-3.5 pl-6 whitespace-nowrap font-black text-slate-700 font-sans">
                         {formatDateFriendly(task.date)}
                       </td>
-                      <td className="p-3.5 font-mono text-slate-400 font-bold text-[9.5px]">
-                        #{task.taskId}
-                      </td>
                       <td className="p-3.5">
-                        <span className="bg-brand-primary/8 text-brand-primary border border-brand-primary/10 px-2 py-0.5 rounded text-[8.5px] font-black font-sans">
+                        <span className="bg-brand-primary text-white border border-brand-primary/20 px-3 py-1.5 rounded-lg text-[10.5px] font-black font-sans shadow-sm tracking-wide inline-block">
                           {task.projectRef}
                         </span>
                       </td>
-                      <td className="p-3.5 max-w-[280px]">
-                        <div className="font-black text-slate-800 mb-0.5 leading-snug font-sans">
+                      <td className="p-3.5 whitespace-normal break-words max-w-[500px]">
+                        <div className="font-black text-slate-800 mb-1 leading-snug font-sans text-xs">
                           {task.taskTitle}
                         </div>
-                        <div className="text-slate-500 text-[10px] leading-relaxed font-sans font-medium">
-                          {task.taskDescription}
-                        </div>
-                      </td>
-                      <td className="p-3.5">
-                        <PriorityBadge priority={task.priority} />
+                        {task.taskDescription && (
+                          <div className="text-slate-500 text-[10.5px] leading-relaxed font-sans font-medium whitespace-normal break-words">
+                            {task.taskDescription}
+                          </div>
+                        )}
                       </td>
                       <td className="p-3.5">
                         <StatusToggle status={task.status} readOnly={true} />
                       </td>
-                      <td className="p-3.5 text-brand-primary whitespace-nowrap font-black font-sans">
+                      <td className="p-3.5 pr-6 text-brand-primary whitespace-nowrap font-black font-sans">
                         {task.completedAt 
                           ? formatDateFriendly(task.completedAt) 
                           : (task.status === 'Done' ? formatDateFriendly(task.date) : '—')
                         }
-                      </td>
-                      <td className="p-3.5 pr-6 text-slate-500 italic max-w-[180px] truncate font-medium font-sans text-[10.5px]" title={task.remarks}>
-                        {task.remarks || '—'}
                       </td>
                     </tr>
                   ))}

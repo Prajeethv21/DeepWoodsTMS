@@ -148,6 +148,25 @@ export interface AuthStatus {
   picture?: string;
 }
 
+export interface EmailThread {
+  id: string;
+  subject: string;
+  snippet: string;
+  lastMessageDate: string;
+  messageCount: number;
+  isUnread: boolean;
+}
+
+export interface EmailMessage {
+  id: string;
+  from: string;
+  to: string;
+  cc: string;
+  date: string;
+  subject: string;
+  body: string;
+}
+
 // Custom axios wrapper to avoid CORS preflight options blocks on GAS Web App URLs
 const api = {
   get: async <T>(endpoint: string, params: Record<string, any> = {}): Promise<T> => {

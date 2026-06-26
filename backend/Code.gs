@@ -55,6 +55,20 @@ function doGet(e) {
         const adminData = getAdminData(ss);
         return jsonSuccess(adminData);
 
+      case "getEmailThreads":
+        if (!email) return jsonError("Email parameter required.");
+        const userAuth = getAuthStatus(email, ss);
+        const threads = getEmailThreads(email, userAuth.isAdmin, ss);
+        return jsonSuccess(threads);
+
+      case "getThreadMessages":
+        if (!email) return jsonError("Email parameter required.");
+        const threadId = params.threadId;
+        if (!threadId) return jsonError("Thread ID parameter required.");
+        const userAuthMsg = getAuthStatus(email, ss);
+        const messages = getThreadMessages(threadId, email, userAuthMsg.isAdmin, ss);
+        return jsonSuccess(messages);
+
       default:
         return jsonError("Unsupported action GET query: " + action);
     }
@@ -138,6 +152,18 @@ function doPost(e) {
         
         const createTaskResult = createTaskInSheet(payload.taskData, ss);
         return jsonSuccess(createTaskResult);
+
+      case "replyToThread":
+        const replyEmail = payload.email;
+        const replyThreadId = payload.threadId;
+        const replyBody = payload.body;
+        if (!replyEmail) return jsonError("Sender email required.");
+        if (!replyThreadId) return jsonError("Thread ID required.");
+        if (!replyBody) return jsonError("Reply content body is empty.");
+        
+        const replyAuth = getAuthStatus(replyEmail, ss);
+        const replyResult = replyToThread(replyThreadId, replyBody, replyEmail, replyAuth.isAdmin, ss);
+        return jsonSuccess(replyResult);
 
       default:
         return jsonError("Unsupported action POST query: " + action);

@@ -88,47 +88,33 @@ aside nav a {
 
 /* Desktop Sidebar Shift & Scale Transitions */
 @media (min-width: 768px) {
-  /* Sidebar, main content, and header animated in perfect synchronization */
-  aside,
-  main, 
-  .sticky.top-4 {
-    transition: transform 350ms cubic-bezier(0.4, 0, 0.2, 1), 
-                width 350ms cubic-bezier(0.4, 0, 0.2, 1), 
-                margin-left 350ms cubic-bezier(0.4, 0, 0.2, 1),
-                border-radius 350ms cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 350ms cubic-bezier(0.4, 0, 0.2, 1),
-                border 350ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  /* Sidebar transitions optimized for GPU hardware acceleration */
+  aside {
+    transition: width 220ms cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 220ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+    will-change: width, box-shadow;
   }
 
-  /* Main content container is styled as a premium card by default, maintaining 16px gap from minimized sidebar */
+  /* When sidebar is expanded, show a premium overlay shadow */
+  body.sidebar-expanded aside {
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(146, 193, 62, 0.05) !important;
+  }
+
+  /* Main content container maintains a static position to prevent laggy layout reflows */
   main {
     margin-left: 88px !important; /* 72px (sidebar edge) + 16px gap */
     width: calc(100% - 104px) !important; /* accounts for 88px left margin + 16px right margin */
     border-radius: 24px !important;
     background-color: #ffffff !important;
-    border: 1px solid rgba(17, 17, 17, 0.04) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important; /* Darker border for visibility */
     box-shadow: 0 10px 30px rgba(146, 193, 62, 0.015), 0 1px 3px rgba(0, 0, 0, 0.005) !important;
   }
 
-  /* Main content container pushes right and scales down when sidebar expands */
-  body.sidebar-expanded main {
-    margin-left: 252px !important; /* Shift right (aside is 220px + 16px gap + 16px extra) */
-    width: calc(100% - 268px) !important; /* Reduce width */
-    border-radius: 28px !important; /* Premium rounded corner styling */
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.01) !important;
-    border: 1px solid rgba(17, 17, 17, 0.05) !important;
-  }
-
-  /* Header shifts and scales to match main content container in both states */
+  /* Header shifts and scales to match main content container statically */
   .sticky.top-4 {
     margin-left: 88px !important; /* 72px (sidebar edge) + 16px gap */
     width: calc(100% - 104px) !important; /* 88px left margin + 16px right margin */
     margin-bottom: 20px !important; /* Increased margin between navbar and page content */
-  }
-
-  body.sidebar-expanded .sticky.top-4 {
-    margin-left: 252px !important; /* 236px (sidebar edge) + 16px gap */
-    width: calc(100% - 268px) !important; /* 252px left margin + 16px right margin */
   }
 }
 
@@ -164,7 +150,7 @@ aside nav a {
 /* Premium Card Classes - Soft green theme shadows */
 .premium-card {
   background-color: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  border: 1px solid rgba(15, 23, 42, 0.15) !important; /* Darker card border for better visibility */
   box-shadow: 0 10px 30px rgba(146, 193, 62, 0.03), 0 1px 3px rgba(0, 0, 0, 0.01) !important;
   border-radius: 24px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -172,6 +158,37 @@ aside nav a {
 
 .premium-card:hover {
   box-shadow: 0 16px 40px rgba(146, 193, 62, 0.07), 0 2px 8px rgba(0, 0, 0, 0.02) !important;
-  border-color: rgba(146, 193, 62, 0.25) !important;
+  border-color: rgba(146, 193, 62, 0.28) !important;
   transform: translateY(-1px);
+}
+
+/* ========================================================
+   Custom Border Visibility Enhancements for White Containers
+   ======================================================== */
+.border-slate-100 {
+  border-color: rgba(15, 23, 42, 0.09) !important; /* Darker, refined slate-100 border */
+}
+
+.border-slate-200 {
+  border-color: rgba(15, 23, 42, 0.14) !important; /* Darker, refined slate-200 border */
+}
+
+.border-slate-200\/30 {
+  border-color: rgba(15, 23, 42, 0.05) !important;
+}
+
+.border-slate-200\/40 {
+  border-color: rgba(15, 23, 42, 0.07) !important;
+}
+
+.border-slate-200\/50 {
+  border-color: rgba(15, 23, 42, 0.08) !important;
+}
+
+.border-slate-200\/60 {
+  border-color: rgba(15, 23, 42, 0.10) !important;
+}
+
+.border-slate-200\/80 {
+  border-color: rgba(15, 23, 42, 0.13) !important;
 }

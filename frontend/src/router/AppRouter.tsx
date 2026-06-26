@@ -12,6 +12,7 @@ import EfficiencyRanking from '../pages/EfficiencyRanking';
 import AnalyticsOverview from '../pages/AnalyticsOverview';
 import AccessDenied from '../pages/AccessDenied';
 import AssignTask from '../pages/AssignTask';
+import MailCenter from '../pages/MailCenter';
 
 // Sleek premium light loading screen
 const LoadingScreen: React.FC = () => {
@@ -83,6 +84,12 @@ export const AppRouter: React.FC = () => {
       <Route path="/member/history" element={
         <MemberRoute>
           <TaskHistory />
+        </MemberRoute>
+      } />
+
+      <Route path="/mail" element={
+        <MemberRoute>
+          <MailCenter />
         </MemberRoute>
       } />
 

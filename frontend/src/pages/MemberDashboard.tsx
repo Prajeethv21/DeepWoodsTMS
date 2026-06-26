@@ -473,7 +473,7 @@ export const MemberDashboard: React.FC = () => {
         {/* Project Classification Filters Toggle */}
         <div className="flex items-center gap-1.5 bg-slate-100/80 border border-slate-200/50 p-1 rounded-xl w-fit mb-6 select-none shadow-sm">
           {[
-            { id: 'All', label: 'All Projects', icon: <LayoutGrid className="w-3.5 h-3.5" /> },
+            { id: 'All', label: 'All Tasks', icon: <LayoutGrid className="w-3.5 h-3.5" /> },
             { id: 'Internal', label: 'Internal Projects', icon: <Layers className="w-3.5 h-3.5" /> },
             { id: 'External', label: 'Client Projects', icon: <Globe className="w-3.5 h-3.5" /> }
           ].map(tab => (

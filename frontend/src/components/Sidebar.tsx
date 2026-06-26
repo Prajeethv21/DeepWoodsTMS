@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { Calendar, History, FolderOpen, Users, PlusCircle, Award, TrendingUp, LogOut } from 'lucide-react';
+import { Calendar, History, Mail, FolderOpen, Users, PlusCircle, Award, TrendingUp, LogOut } from 'lucide-react';
 
 export const Sidebar: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -101,6 +101,26 @@ export const Sidebar: React.FC = () => {
                 <>
                   <History className={`w-4 h-4 shrink-0 ${isActive ? 'text-brand-primary' : 'text-slate-500'}`} />
                   {isExpanded && <span className="text-xs font-bold font-sans">Task History</span>}
+                </>
+              )}
+            </NavLink>
+
+            <NavLink 
+              to="/mail" 
+              className={({ isActive }) => 
+                `w-full flex items-center transition-all duration-200 relative py-2.5 ${
+                  isExpanded ? 'px-3.5 gap-3.5' : 'pl-3 pr-0 gap-0'
+                } ${
+                  isActive 
+                    ? 'active-nav-tab' 
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/40 rounded-xl'
+                }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <Mail className={`w-4 h-4 shrink-0 ${isActive ? 'text-brand-primary' : 'text-slate-500'}`} />
+                  {isExpanded && <span className="text-xs font-bold font-sans">Mail Center</span>}
                 </>
               )}
             </NavLink>
